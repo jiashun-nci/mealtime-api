@@ -1,0 +1,126 @@
+application {
+  config {
+    baseName mealtime
+    packageName com.mealtime.store
+    authenticationType jwt
+    prodDatabaseType postgresql
+    buildTool maven
+    clientFramework react
+    enableTranslation true
+    nativeLanguage en
+    languages [en]
+  }
+  entities *
+}
+
+
+/** Product sold by the Online store */
+entity Product {
+    name String required
+    description String
+    price BigDecimal required min(0)
+    productImage ImageBlob
+    active Boolean required
+    featured Boolean
+    
+}
+
+
+entity ProductCategory {
+    name String required
+    description String
+    categoryImage ImageBlob
+}
+
+entity ProductAttribute {
+    name String required
+    value String
+    priceExtra BigDecimal required min(0)
+}
+
+entity Shop {
+    name String required
+    phone String required
+    addressLine1 String required
+    addressLine2 String
+    city String required
+    country String required
+    shopImage ImageBlob
+    deliveryFee BigDecimal min(0)
+    
+}
+
+
+entity CustomerDetails {
+    gender Gender required
+    phone String required
+    birthday LocalDate
+    addressLine1 String required
+    addressLine2 String
+    city String required
+    country String required
+    avatar ImageBlob
+}
+
+enum Gender {
+    MALE, FEMALE
+}
+
+entity ShoppingCart {
+    placedDate Instant required
+    quantity Integer required min(0)
+    price BigDecimal required min(0)
+}
+
+enum OrderStatus {
+    COMPLETED, PAID, PENDING, CANCELLED, REFUNDED
+}
+
+enum PaymentMethod {
+    CREDIT_CARD(card), CASH(cash)
+}
+
+entity Order {
+    placedDate Instant required
+    quantity Integer required min(0)
+    totalPrice BigDecimal required min(0)
+    status OrderStatus required
+    paymentMethod PaymentMethod required
+    paymentReference String
+}
+
+entity OrderItem {
+    placedDate Instant required
+    quantity Integer required min(0)
+    price BigDecimal required min(0)
+}
+
+entity Rider {
+    name String required
+    phone String required
+    avatar ImageBlob
+}
+
+relationship OneToOne {
+    CustomerDetails{user(login) required} to User
+    Shop{user(login) required} to User
+}
+
+relationship ManyToOne {
+    Product{Shop(name) required} to Shop
+    Order{Rider(name) required} to Rider
+    Order{User(name) required} to User
+    OrderItem{Order required} to Order
+    OrderItem{Product(name) required} to Product
+    
+}
+
+relationship OneToMany {
+    CustomerDetails{cart} to ShoppingCart{customerDetails required}, 
+    ShoppingCart{order} to Order{cart required}, 
+    ProductCategory{product} to Product{productCategory(name) required}
+    ProductAttribute{product} to Product{ProductAttribute(name) required}
+}
+
+service * with serviceClass
+paginate Product, ProductAttribute, Shop, CustomerDetails, ProductCategory with pagination

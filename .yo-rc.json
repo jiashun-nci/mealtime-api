@@ -1,0 +1,72 @@
+{
+  "generator-jhipster": {
+    "applicationIndex": 0,
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "baseName": "mealtime",
+    "blueprints": [
+      {
+        "name": "generator-jhipster-react-native",
+        "version": "4.3.0"
+      }
+    ],
+    "buildTool": "maven",
+    "cacheProvider": "ehcache",
+    "clientFramework": "react",
+    "clientPackageManager": "npm",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "creationTimestamp": 1690640687118,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "dtoSuffix": "DTO",
+    "enableGradleEnterprise": false,
+    "enableHibernateCache": true,
+    "enableSwaggerCodegen": false,
+    "enableTranslation": true,
+    "entities": [
+      "Product",
+      "ProductCategory",
+      "ProductAttribute",
+      "Shop",
+      "CustomerDetails",
+      "ShoppingCart",
+      "Order",
+      "OrderItem",
+      "Rider"
+    ],
+    "entitySuffix": "",
+    "gradleEnterpriseHost": "",
+    "jhiPrefix": "jhi",
+    "jhipsterVersion": "7.9.3",
+    "languages": ["en"],
+    "lastLiquibaseTimestamp": 1690641227000,
+    "messageBroker": false,
+    "nativeLanguage": "en",
+    "otherModules": [
+      {
+        "name": "generator-jhipster-react-native",
+        "version": "4.3.0"
+      }
+    ],
+    "packageFolder": "com/mealtime/store",
+    "packageName": "com.mealtime.store",
+    "pages": [],
+    "prodDatabaseType": "postgresql",
+    "reactNative": {
+      "detox": true,
+      "reactNativeAppName": "Mealtime"
+    },
+    "reactive": false,
+    "searchEngine": false,
+    "serverPort": "8080",
+    "serviceDiscoveryType": false,
+    "skipCheckLengthOfIdentifier": false,
+    "skipClient": false,
+    "skipFakeData": false,
+    "skipUserManagement": false,
+    "testFrameworks": [],
+    "websocket": false,
+    "withAdminUi": true
+  }
+}
