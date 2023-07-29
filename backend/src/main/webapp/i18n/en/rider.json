@@ -1,0 +1,26 @@
+{
+  "mealtimeApp": {
+    "rider": {
+      "home": {
+        "title": "Riders",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Rider",
+        "createOrEditLabel": "Create or edit a Rider",
+        "notFound": "No Riders found"
+      },
+      "created": "A new Rider is created with identifier {{ param }}",
+      "updated": "A Rider is updated with identifier {{ param }}",
+      "deleted": "A Rider is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Rider {{ id }}?"
+      },
+      "detail": {
+        "title": "Rider"
+      },
+      "id": "ID",
+      "name": "Name",
+      "phone": "Phone",
+      "avatar": "Avatar"
+    }
+  }
+}

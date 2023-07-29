@@ -1,0 +1,37 @@
+{
+  "applications": ["mealtime"],
+  "changelogDate": "20230729145518",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "product_category",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "categoryImage",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ProductCategory",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "productCategory",
+      "relationshipName": "product",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}
