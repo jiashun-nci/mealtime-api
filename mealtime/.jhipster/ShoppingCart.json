@@ -1,0 +1,41 @@
+{
+  "angularJSSuffix": "",
+  "applications": ["mealtime"],
+  "changelogDate": "20230731000521",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "shopping_cart",
+  "fields": [
+    {
+      "fieldName": "placedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "quantity",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ShoppingCart",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "productOrder",
+      "otherEntityRelationshipName": "shoppingCart",
+      "relationshipName": "productOrder",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass",
+  "skipClient": false
+}
