@@ -1,0 +1,282 @@
+import React, { createRef } from 'react';
+import { ActivityIndicator, Text, View } from 'react-native';
+import { connect } from 'react-redux';
+import * as Yup from 'yup';
+
+import ProductOrderActions from './product-order.reducer';
+import RiderActions from '../rider/rider.reducer';
+import UserActions from '../../../shared/reducers/user.reducer';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import FormButton from '../../../shared/components/form/jhi-form-button';
+import FormField from '../../../shared/components/form/jhi-form-field';
+import Form from '../../../shared/components/form/jhi-form';
+import { useDidUpdateEffect } from '../../../shared/util/use-did-update-effect';
+import styles from './product-order-styles';
+
+// set up validation schema for the form
+const validationSchema = Yup.object().shape({
+  quantity: Yup.number().min(0),
+  totalPrice: Yup.number().min(0),
+});
+
+const OrderStatus = [
+  {
+    label: 'COMPLETED',
+    value: 'COMPLETED',
+  },
+  {
+    label: 'PAID',
+    value: 'PAID',
+  },
+  {
+    label: 'PENDING',
+    value: 'PENDING',
+  },
+  {
+    label: 'CANCELLED',
+    value: 'CANCELLED',
+  },
+  {
+    label: 'REFUNDED',
+    value: 'REFUNDED',
+  },
+];
+const PaymentMethod = [
+  {
+    label: 'CREDIT_CARD (card)',
+    value: 'CREDIT_CARD (card)',
+  },
+  {
+    label: 'CASH (cash)',
+    value: 'CASH (cash)',
+  },
+];
+
+function ProductOrderEditScreen(props) {
+  const {
+    getProductOrder,
+    updateProductOrder,
+    route,
+    productOrder,
+    fetching,
+    updating,
+    errorUpdating,
+    updateSuccess,
+    navigation,
+    reset,
+    getAllRiders,
+    riderList,
+    getAllUsers,
+    userList,
+  } = props;
+
+  const [formValue, setFormValue] = React.useState();
+  const [error, setError] = React.useState('');
+
+  const isNewEntity = !(route.params && route.params.entityId);
+
+  React.useEffect(() => {
+    if (!isNewEntity) {
+      getProductOrder(route.params.entityId);
+    } else {
+      reset();
+    }
+  }, [isNewEntity, getProductOrder, route, reset]);
+
+  React.useEffect(() => {
+    if (isNewEntity) {
+      setFormValue(entityToFormValue({}));
+    } else if (!fetching) {
+      setFormValue(entityToFormValue(productOrder));
+    }
+  }, [productOrder, fetching, isNewEntity]);
+
+  // fetch related entities
+  React.useEffect(() => {
+    getAllRiders();
+    getAllUsers();
+  }, [getAllRiders, getAllUsers]);
+
+  useDidUpdateEffect(() => {
+    if (updating === false) {
+      if (errorUpdating) {
+        setError(errorUpdating && errorUpdating.detail ? errorUpdating.detail : 'Something went wrong updating the entity');
+      } else if (updateSuccess) {
+        setError('');
+        isNewEntity || !navigation.canGoBack()
+          ? navigation.replace('ProductOrderDetail', { entityId: productOrder?.id })
+          : navigation.pop();
+      }
+    }
+  }, [updateSuccess, errorUpdating, navigation]);
+
+  const onSubmit = (data) => updateProductOrder(formValueToEntity(data));
+
+  if (fetching) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  const formRef = createRef();
+  const placedDateRef = createRef();
+  const quantityRef = createRef();
+  const totalPriceRef = createRef();
+  const statusRef = createRef();
+  const paymentMethodRef = createRef();
+  const paymentReferenceRef = createRef();
+  const riderRef = createRef();
+  const userRef = createRef();
+
+  return (
+    <View style={styles.container}>
+      <KeyboardAwareScrollView
+        enableResetScrollToCoords={false}
+        testID="productOrderEditScrollView"
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        contentContainerStyle={styles.paddedScrollView}>
+        {!!error && <Text style={styles.errorText}>{error}</Text>}
+        {formValue && (
+          <Form initialValues={formValue} validationSchema={validationSchema} onSubmit={onSubmit} ref={formRef}>
+            <FormField
+              name="placedDate"
+              ref={placedDateRef}
+              label="Placed Date"
+              placeholder="Enter Placed Date"
+              testID="placedDateInput"
+              inputType="datetime"
+              onSubmitEditing={() => quantityRef.current?.focus()}
+            />
+            <FormField
+              name="quantity"
+              ref={quantityRef}
+              label="Quantity"
+              placeholder="Enter Quantity"
+              testID="quantityInput"
+              inputType="number"
+              onSubmitEditing={() => totalPriceRef.current?.focus()}
+            />
+            <FormField
+              name="totalPrice"
+              ref={totalPriceRef}
+              label="Total Price"
+              placeholder="Enter Total Price"
+              testID="totalPriceInput"
+              inputType="number"
+            />
+            <FormField
+              name="status"
+              ref={statusRef}
+              label="Status"
+              placeholder="Enter Status"
+              testID="statusInput"
+              inputType="select-one"
+              listItems={OrderStatus}
+            />
+            <FormField
+              name="paymentMethod"
+              ref={paymentMethodRef}
+              label="Payment Method"
+              placeholder="Enter Payment Method"
+              testID="paymentMethodInput"
+              inputType="select-one"
+              listItems={PaymentMethod}
+              onSubmitEditing={() => paymentReferenceRef.current?.focus()}
+            />
+            <FormField
+              name="paymentReference"
+              ref={paymentReferenceRef}
+              label="Payment Reference"
+              placeholder="Enter Payment Reference"
+              testID="paymentReferenceInput"
+              inputType="text"
+              autoCapitalize="none"
+            />
+            <FormField
+              name="rider"
+              inputType="select-one"
+              ref={riderRef}
+              listItems={riderList}
+              listItemLabelField="name"
+              label="Rider"
+              placeholder="Select Rider"
+              testID="riderSelectInput"
+            />
+            <FormField
+              name="user"
+              inputType="select-one"
+              ref={userRef}
+              listItems={userList}
+              listItemLabelField="login"
+              label="User"
+              placeholder="Select User"
+              testID="userSelectInput"
+            />
+
+            <FormButton title={'Save'} testID={'submitButton'} />
+          </Form>
+        )}
+      </KeyboardAwareScrollView>
+    </View>
+  );
+}
+
+// convenience methods for customizing the mapping of the entity to/from the form value
+const entityToFormValue = (value) => {
+  if (!value) {
+    return {};
+  }
+  return {
+    id: value.id ?? null,
+    placedDate: value.placedDate ?? null,
+    quantity: value.quantity ?? null,
+    totalPrice: value.totalPrice ?? null,
+    status: value.status ?? null,
+    paymentMethod: value.paymentMethod ?? null,
+    paymentReference: value.paymentReference ?? null,
+    rider: value.rider && value.rider.id ? value.rider.id : null,
+    user: value.user && value.user.id ? value.user.id : null,
+  };
+};
+const formValueToEntity = (value) => {
+  const entity = {
+    id: value.id ?? null,
+    placedDate: value.placedDate ?? null,
+    quantity: value.quantity ?? null,
+    totalPrice: value.totalPrice ?? null,
+    status: value.status ?? null,
+    paymentMethod: value.paymentMethod ?? null,
+    paymentReference: value.paymentReference ?? null,
+  };
+  entity.rider = value.rider ? { id: value.rider } : null;
+  entity.user = value.user ? { id: value.user } : null;
+  return entity;
+};
+
+const mapStateToProps = (state) => {
+  return {
+    riderList: state.riders.riderList ?? [],
+    userList: state.users.userList ?? [],
+    productOrder: state.productOrders.productOrder,
+    fetching: state.productOrders.fetchingOne,
+    updating: state.productOrders.updating,
+    updateSuccess: state.productOrders.updateSuccess,
+    errorUpdating: state.productOrders.errorUpdating,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAllRiders: (options) => dispatch(RiderActions.riderAllRequest(options)),
+    getAllUsers: (options) => dispatch(UserActions.userAllRequest(options)),
+    getProductOrder: (id) => dispatch(ProductOrderActions.productOrderRequest(id)),
+    getAllProductOrders: (options) => dispatch(ProductOrderActions.productOrderAllRequest(options)),
+    updateProductOrder: (productOrder) => dispatch(ProductOrderActions.productOrderUpdateRequest(productOrder)),
+    reset: () => dispatch(ProductOrderActions.productOrderReset()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductOrderEditScreen);
