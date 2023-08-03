@@ -1,0 +1,9 @@
+{
+  "mealtimeApp": {
+    "PaymentMethod": {
+      "null": "",
+      "CREDIT_CARD": "card",
+      "CASH": "cash"
+    }
+  }
+}

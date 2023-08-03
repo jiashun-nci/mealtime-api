@@ -1,0 +1,59 @@
+{
+  "applications": ["mealtime"],
+  "changelogDate": "20230803234038",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "product_order",
+  "fields": [
+    {
+      "fieldName": "placedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "quantity",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "totalPrice",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "OrderStatus",
+      "fieldValues": "COMPLETED,PAID,PENDING,CANCELLED,REFUNDED"
+    },
+    {
+      "fieldName": "paymentMethod",
+      "fieldType": "PaymentMethod",
+      "fieldValues": "CREDIT_CARD (card),CASH (cash)"
+    },
+    {
+      "fieldName": "paymentReference",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ProductOrder",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "rider",
+      "relationshipName": "rider",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}
