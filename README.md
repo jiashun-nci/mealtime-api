@@ -1,4 +1,13 @@
-# MealtimeApp
+# MealtimeApi &App
+For RESTful API
+```bash
+cd mealtimeApi
+```
+
+For React Native APP
+```bash
+cd mealtimeApp
+```
 
 
 ## Table of Contents
