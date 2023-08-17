@@ -1,4 +1,13 @@
 # MealtimeApi &App
+
+## Download aab file or apk file for testing
+```AAB
+[https://1drv.ms/u/s!Agnyl1E_rfxplfxo_BlqEtubVf7weg?e=FiHzbe](https://1drv.ms/u/s!Agnyl1E_rfxplfxo_BlqEtubVf7weg?e=Hq7jv9)
+```
+
+```APK
+[https://1drv.ms/u/s!Agnyl1E_rfxplfxo_BlqEtubVf7weg?e=FiHzbe](https://1drv.ms/u/s!Agnyl1E_rfxplfxpGGwjmbhaJMk_4Q?e=CoIDiz)
+```
 ## Quick start
 For RESTful API
 ```bash
