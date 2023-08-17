@@ -2,7 +2,7 @@
 
 ## Download aab file or apk file for testing
 ```AAB
-[https://1drv.ms/u/s!Agnyl1E_rfxplfxo_BlqEtubVf7weg?e=FiHzbe](https://1drv.ms/u/s!Agnyl1E_rfxplfxo_BlqEtubVf7weg?e=Hq7jv9)
+[AAB](https://1drv.ms/u/s!Agnyl1E_rfxplfxo_BlqEtubVf7weg?e=Hq7jv9)
 ```
 
 ```APK
